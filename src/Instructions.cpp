@@ -78,7 +78,7 @@ void Instructions::sub_8xy5(regnb_t vx, regnb_t vy) {
  * @param vy
  */
 void Instructions::shr_8xy6(regnb_t vx, regnb_t vy) {
-  //  registers_->v_[vx].poke(registers_->v_[vy].peek());// Should be disabled at will by conf
+//  registers_->v_[vx].poke(registers_->v_[vy].peek());// Should be disabled at will by conf
   registers_->v_[0xf].poke(registers_->v_[vx].peek() & 0x1);
   registers_->v_[vx].poke(registers_->v_[vx].peek() >> 1);
 }
@@ -136,17 +136,19 @@ void Instructions::drw_Dxyn(regnb_t vx, regnb_t vy, uint8_t n) {
     sprite_byte_ = memory_->peek(registers_->i_.peek() + row);
     x_ = registers_->v_[vx].peek() % 64;
 
-    for (int pixel = 0; pixel < 8; pixel++) {
+    for (uint8_t pixel = 0; pixel < 8; pixel++) {
+      if (x_ >= 64) { x_ = 0; }
+      if (y_ >= 32) { y_ = 0; }
+
       sprite_pixel_is_on_ = sprite_byte_ & (uint8_t) pow(2, 7 - pixel);
       disp_pixel_is_on_ = interface_->is_pixel_on(x_, y_);
 
       if (sprite_pixel_is_on_ && disp_pixel_is_on_) {
-        interface_->draw_pixel(x_, y_, false);
+        interface_->set_pixel_state(x_, y_, false);
         registers_->v_[0xf].poke(1);
       } else if (sprite_pixel_is_on_) {
-        interface_->draw_pixel(x_, y_, true);
+        interface_->set_pixel_state(x_, y_, true);
       }
-
       x_++;
     }
     y_++;
@@ -202,7 +204,7 @@ void Instructions::ld_Fx33(regnb_t vx) {
 void Instructions::ld_Fx55(regnb_t vx) {
   for (int i = 0; i <= vx; i++) {
     memory_->poke(registers_->v_[i].peek(), registers_->i_.peek() + i);
-    //    registers_->i_.increment();
+//    registers_->i_.increment();
   }
 }
 
@@ -213,6 +215,6 @@ void Instructions::ld_Fx55(regnb_t vx) {
 void Instructions::ld_Fx65(regnb_t vx) {
   for (int i = 0; i <= vx; i++) {
     registers_->v_[i].poke(memory_->peek(registers_->i_.peek() + i));
-    //    registers_->i_.increment();
+//    registers_->i_.increment();
   }
 }

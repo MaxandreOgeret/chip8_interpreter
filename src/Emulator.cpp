@@ -35,7 +35,7 @@ void Emulator::loop() {
 
     // ---- Stuff happens here ----
     registers_->trigger_timers();
-    interface_->trigger_buzzer();
+    interface_->toogle_buzzer();
     interface_->poll_events();
     interface_->get_keys();
     romParser_->step();

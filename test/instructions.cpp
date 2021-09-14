@@ -58,8 +58,7 @@ TEST(instructions, 00E0) {
   std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
 
   for (int x=0; x<interface->SIZE_X_; x++) {
-    for (int y=0; y<interface->SIZE_Y_; y++) {
-      interface->draw_pixel(x, y, true);
+    for (int y=0; y<interface->SIZE_Y_; y++) { interface->set_pixel_state(x, y, true);
     }
   }
 
@@ -655,7 +654,7 @@ TEST(instructions, Cxkk) {
 TEST(instructions, Dxyn) {
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
-  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers);
+  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
   std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
   std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
 
@@ -728,12 +727,13 @@ TEST(instructions, Dxyn) {
   };
 
   EXPECT_EQ(registers->v_[0xf].peek(), 0x0);
+
   for (int i=0; i<64; i++) {
     EXPECT_EQ(interface->is_pixel_on(i, 0), row3[i]);
     EXPECT_EQ(interface->is_pixel_on(i, 1), row3[i]);
     EXPECT_EQ(interface->is_pixel_on(i, 2), row4[i]);
-    EXPECT_EQ(interface->is_pixel_on(i, 62), row4[i]);
-    EXPECT_EQ(interface->is_pixel_on(i, 63), row3[i]);
+    EXPECT_EQ(interface->is_pixel_on(i, 30), row4[i]);
+    EXPECT_EQ(interface->is_pixel_on(i, 31), row3[i]);
   }
 
   for (int x=2; x<interface->SIZE_X_-2; x++) {

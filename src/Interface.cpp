@@ -44,13 +44,18 @@ bool Interface::requests_close() const {
 }
 
 void Interface::clear() {
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-  SDL_RenderClear(renderer);
-  SDL_RenderPresent(renderer);
+  for (u_int8_t x = 0; x < SIZE_X_; x++) {
+    for (u_int8_t y = 0; y < SIZE_Y_; y++) { set_pixel_state(x, y, false); }
+  }
+  render();
 }
 
-void Interface::draw_pixel(unsigned short x, unsigned short y, bool on) {
-  if (on) {
+void Interface::set_pixel_state(unsigned short x, unsigned short y, bool state) {
+  screen_memory_[x][y] = state;
+}
+
+void Interface::draw_pixel(unsigned short x, unsigned short y, bool state) {
+  if (state) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
   } else {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
@@ -59,13 +64,20 @@ void Interface::draw_pixel(unsigned short x, unsigned short y, bool on) {
   SDL_RenderFillRect(renderer, &rect);
 }
 
-void Interface::render() { SDL_RenderPresent(renderer); }
+//void Interface::render() { SDL_RenderPresent(renderer); }
+
+void Interface::render() {
+  for (u_int8_t x = 0; x < SIZE_X_; x++) {
+    for (u_int8_t y = 0; y < SIZE_Y_; y++) { draw_pixel(x, y, screen_memory_[x][y]); }
+  }
+  SDL_RenderPresent(renderer);
+}
 
 bool Interface::is_pixel_on(int x, int y) {
-  p_ = (uint8_t *) SDL_GetWindowSurface(window)->pixels +
-       normalize_y(y) * SDL_GetWindowSurface(window)->pitch + normalize_x(x) * bpp_;
-  SDL_GetRGB(*(uint32_t *) p_, SDL_GetWindowSurface(window)->format, &rgb_.r, &rgb_.g, &rgb_.b);
-  return rgb_.r != 0;
+  if (x >= SIZE_X_ || y >= SIZE_Y_) {
+    throw std::runtime_error("Tried to get the value of an out of bound pixel.");
+  }
+  return screen_memory_[x][y];
 }
 
 void Interface::get_keys() {
@@ -180,7 +192,7 @@ void Interface::forward_audio_callback(void * user_data, Uint8 * raw_buffer, int
   static_cast<Interface *>(user_data)->audio_callback(user_data, raw_buffer, bytes);
 }
 
-void Interface::trigger_buzzer() {
+void Interface::toogle_buzzer() {
   if (registers_->st_.peek() > 0) {
     SDL_PauseAudio(0);
   } else {
