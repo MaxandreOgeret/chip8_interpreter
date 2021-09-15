@@ -13,11 +13,15 @@
 const unsigned short int FREQ = 500;
 
 TEST(instructions, get_from_opcode) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
-  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Interface> display = std::make_shared<Interface>(registers, true);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, display);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   // INVALID MASKS
   EXPECT_THROW(romParser->get_from_opcode(0x6789, 0xFFFF), std::runtime_error);
@@ -51,39 +55,42 @@ TEST(instructions, get_from_opcode) {
 }
 
 TEST(instructions, 00E0) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
-  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
-  for (int x=0; x<interface->SIZE_X_; x++) {
-    for (int y=0; y<interface->SIZE_Y_; y++) { interface->set_pixel_state(x, y, true);
-    }
+  for (int x = 0; x < interface->SIZE_X_; x++) {
+    for (int y = 0; y < interface->SIZE_Y_; y++) { interface->set_pixel_state(x, y, true); }
   }
 
-  for (int x=0; x<interface->SIZE_X_; x++) {
-    for (int y=0; y<interface->SIZE_Y_; y++) {
-      EXPECT_TRUE(interface->is_pixel_on(x, y));
-    }
+  for (int x = 0; x < interface->SIZE_X_; x++) {
+    for (int y = 0; y < interface->SIZE_Y_; y++) { EXPECT_TRUE(interface->is_pixel_on(x, y)); }
   }
 
   romParser->set_opcode(0x00E0);
   romParser->decode();
 
-  for (int x=0; x<interface->SIZE_X_; x++) {
-    for (int y=0; y<interface->SIZE_Y_; y++) {
-      EXPECT_FALSE(interface->is_pixel_on(x, y));
-    }
+  for (int x = 0; x < interface->SIZE_X_; x++) {
+    for (int y = 0; y < interface->SIZE_Y_; y++) { EXPECT_FALSE(interface->is_pixel_on(x, y)); }
   }
 }
 
 TEST(instructions, 00EE) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->stack_.size(), 0);
   EXPECT_EQ(registers->sp_.peek(), 0);
@@ -104,11 +111,15 @@ TEST(instructions, 00EE) {
 }
 
 TEST(instructions, 1nnn) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->pc_.peek(), 0x0200);
 
@@ -119,11 +130,15 @@ TEST(instructions, 1nnn) {
 }
 
 TEST(instructions, 2nnn) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->stack_.size(), 0);
   EXPECT_EQ(registers->sp_.peek(), 0);
@@ -140,11 +155,15 @@ TEST(instructions, 2nnn) {
 
 
 TEST(instructions, 3xkk) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->v_[0x4].peek(), 0);
   EXPECT_EQ(registers->pc_.peek(), 0x200);
@@ -168,11 +187,15 @@ TEST(instructions, 3xkk) {
 }
 
 TEST(instructions, 4xkk) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->v_[0x4].peek(), 0);
   EXPECT_EQ(registers->pc_.peek(), 0x200);
@@ -193,15 +216,18 @@ TEST(instructions, 4xkk) {
 
   EXPECT_EQ(registers->v_[0x4].peek(), 0xFE);
   EXPECT_EQ(registers->pc_.peek(), 0x202);
-
 }
 
 TEST(instructions, 5xy0) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->v_[0x4].peek(), 0);
   EXPECT_EQ(registers->v_[0xf].peek(), 0);
@@ -237,11 +263,15 @@ TEST(instructions, 5xy0) {
 }
 
 TEST(instructions, 6xkk) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->v_[0x0].peek(), 0);
   EXPECT_EQ(registers->v_[0xF].peek(), 0);
@@ -258,11 +288,15 @@ TEST(instructions, 6xkk) {
 }
 
 TEST(instructions, 7xkk) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->v_[0x0].peek(), 0);
   EXPECT_EQ(registers->v_[0xF].peek(), 0);
@@ -281,11 +315,15 @@ TEST(instructions, 7xkk) {
 }
 
 TEST(instructions, 8xy0) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->v_[0x0].peek(), 0x00);
   EXPECT_EQ(registers->v_[0xE].peek(), 0x00);
@@ -306,15 +344,18 @@ TEST(instructions, 8xy0) {
 
   EXPECT_EQ(registers->v_[0x0].peek(), 0x0C);
   EXPECT_EQ(registers->v_[0xE].peek(), 0x0C);
-
 }
 
 TEST(instructions, 8xy1) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->v_[0x0].peek(), 0x00);
   EXPECT_EQ(registers->v_[0xE].peek(), 0x00);
@@ -339,11 +380,15 @@ TEST(instructions, 8xy1) {
 }
 
 TEST(instructions, 8xy2) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->v_[0x0].peek(), 0x00);
   EXPECT_EQ(registers->v_[0xE].peek(), 0x00);
@@ -368,11 +413,15 @@ TEST(instructions, 8xy2) {
 }
 
 TEST(instructions, 8xy3) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->v_[0x0].peek(), 0x00);
   EXPECT_EQ(registers->v_[0xE].peek(), 0x00);
@@ -397,11 +446,15 @@ TEST(instructions, 8xy3) {
 }
 
 TEST(instructions, 8xy4) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->v_[0x0].peek(), 0x00);
   EXPECT_EQ(registers->v_[0xE].peek(), 0x00);
@@ -463,11 +516,15 @@ TEST(instructions, 8xy4) {
 
 
 TEST(instructions, 8xy5) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   registers->v_[0x1].poke(0x01);
   registers->v_[0x2].poke(0x0f);
@@ -493,11 +550,47 @@ TEST(instructions, 8xy5) {
 }
 
 TEST(instructions, 8xy6) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
+
+  registers->v_[0x0].poke(0x00);
+  registers->v_[0x1].poke(0xff);
+
+  romParser->set_opcode(0x8016);
+  romParser->decode();
+
+  EXPECT_EQ(registers->v_[0x0].peek(), 0x00);
+  EXPECT_EQ(registers->v_[0x1].peek(), 0xff);
+  EXPECT_EQ(registers->v_[0xF].peek(), 0x00);
+  //
+  registers->v_[0x0].poke(0xff);
+  registers->v_[0x1].poke(0xfe);
+
+  romParser->set_opcode(0x8016);
+  romParser->decode();
+
+  EXPECT_EQ(registers->v_[0x0].peek(), 0x7f);
+  EXPECT_EQ(registers->v_[0x1].peek(), 0xfe);
+  EXPECT_EQ(registers->v_[0xF].peek(), 0x01);
+}
+
+TEST(instructions, 8xy6_set_vy) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", true, false, false, false);
+  std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
+  std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
+  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   registers->v_[0x0].poke(0x00);
   registers->v_[0x1].poke(0xff);
@@ -508,7 +601,7 @@ TEST(instructions, 8xy6) {
   EXPECT_EQ(registers->v_[0x0].peek(), 0x7f);
   EXPECT_EQ(registers->v_[0x1].peek(), 0xff);
   EXPECT_EQ(registers->v_[0xF].peek(), 0x01);
-//
+  //
   registers->v_[0x0].poke(0x00);
   registers->v_[0x1].poke(0xfe);
 
@@ -518,15 +611,18 @@ TEST(instructions, 8xy6) {
   EXPECT_EQ(registers->v_[0x0].peek(), 0x7f);
   EXPECT_EQ(registers->v_[0x1].peek(), 0xfe);
   EXPECT_EQ(registers->v_[0xF].peek(), 0x00);
-
 }
 
 TEST(instructions, 8xy7) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   registers->v_[0x0].poke(0x00);
   registers->v_[0x1].poke(0x7f);
@@ -552,11 +648,15 @@ TEST(instructions, 8xy7) {
 }
 
 TEST(instructions, 8xye) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", true, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   registers->v_[0x0].poke(0x00);
   registers->v_[0x1].poke(0xff);
@@ -567,7 +667,7 @@ TEST(instructions, 8xye) {
   EXPECT_EQ(registers->v_[0x0].peek(), 0xFE);
   EXPECT_EQ(registers->v_[0x1].peek(), 0xff);
   EXPECT_EQ(registers->v_[0xF].peek(), 0x01);
-//
+  //
   registers->v_[0x0].poke(0x00);
   registers->v_[0x1].poke(0x7f);
 
@@ -580,11 +680,15 @@ TEST(instructions, 8xye) {
 }
 
 TEST(instructions, 9xy0) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   registers->v_[0x0].poke(0x20);
   registers->v_[0x1].poke(0x10);
@@ -608,11 +712,15 @@ TEST(instructions, 9xy0) {
 }
 
 TEST(instructions, Annn) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   romParser->set_opcode(0xA345);
   romParser->decode();
@@ -621,11 +729,15 @@ TEST(instructions, Annn) {
 }
 
 TEST(instructions, Bnnn) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   registers->v_[0x0].poke(0x1);
 
@@ -635,15 +747,43 @@ TEST(instructions, Bnnn) {
   EXPECT_EQ(registers->pc_.peek(), 0x346);
 }
 
+TEST(instructions, Bxnn) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, true, false, false);
+  std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
+  std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
+  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
+
+  registers->v_[0x3].poke(0x1);
+
+  romParser->set_opcode(0xB345);
+  romParser->decode();
+
+  EXPECT_EQ(registers->pc_.peek(), 0x346);
+
+  romParser->set_opcode(0xB245);
+  romParser->decode();
+
+  EXPECT_EQ(registers->pc_.peek(), 0x245);
+}
+
 /**
  * This doesnt test the random number. Only the mask.
  */
 TEST(instructions, Cxkk) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   romParser->set_opcode(0xC055);
   romParser->decode();
@@ -652,11 +792,15 @@ TEST(instructions, Cxkk) {
 }
 
 TEST(instructions, Dxyn) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   // one sprite on top left (with modulo)
   registers->v_[1].poke(64);
@@ -670,7 +814,7 @@ TEST(instructions, Dxyn) {
   std::vector<bool> row1 = {true, true, true, true, false, false, false, false};
   std::vector<bool> row2 = {true, false, false, true, false, false, false, false};
 
-  for (int i=0; i<8; i++) {
+  for (int i = 0; i < 8; i++) {
     EXPECT_EQ(interface->is_pixel_on(i, 0), row1[i]);
     EXPECT_EQ(interface->is_pixel_on(i, 1), row2[i]);
     EXPECT_EQ(interface->is_pixel_on(i, 2), row2[i]);
@@ -688,10 +832,8 @@ TEST(instructions, Dxyn) {
   romParser->set_opcode(0xd005);
   romParser->decode();
 
-  for (int x=0; x<interface->SIZE_X_; x++) {
-    for (int y=0; y<interface->SIZE_Y_; y++) {
-      EXPECT_FALSE(interface->is_pixel_on(x, y));
-    }
+  for (int x = 0; x < interface->SIZE_X_; x++) {
+    for (int y = 0; y < interface->SIZE_Y_; y++) { EXPECT_FALSE(interface->is_pixel_on(x, y)); }
   }
   EXPECT_EQ(registers->v_[0xf].peek(), 0x1);
 
@@ -705,30 +847,24 @@ TEST(instructions, Dxyn) {
   romParser->decode();
 
   std::vector<bool> row3 = {
-          false, true, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, true, false,
+          false, true,  false, false, false, false, false, false, false, false, false, false, false,
+          false, false, false, false, false, false, false, false, false, false, false, false, false,
+          false, false, false, false, false, false, false, false, false, false, false, false, false,
+          false, false, false, false, false, false, false, false, false, false, false, false, false,
+          false, false, false, false, false, false, false, false, false, false, true,  false,
   };
 
   std::vector<bool> row4 = {
-          true, true, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, false, false,
-          false, false, false, false, false, false, true, true,
+          true,  true,  false, false, false, false, false, false, false, false, false, false, false,
+          false, false, false, false, false, false, false, false, false, false, false, false, false,
+          false, false, false, false, false, false, false, false, false, false, false, false, false,
+          false, false, false, false, false, false, false, false, false, false, false, false, false,
+          false, false, false, false, false, false, false, false, false, false, true,  true,
   };
 
   EXPECT_EQ(registers->v_[0xf].peek(), 0x0);
 
-  for (int i=0; i<64; i++) {
+  for (int i = 0; i < 64; i++) {
     EXPECT_EQ(interface->is_pixel_on(i, 0), row3[i]);
     EXPECT_EQ(interface->is_pixel_on(i, 1), row3[i]);
     EXPECT_EQ(interface->is_pixel_on(i, 2), row4[i]);
@@ -736,26 +872,28 @@ TEST(instructions, Dxyn) {
     EXPECT_EQ(interface->is_pixel_on(i, 31), row3[i]);
   }
 
-  for (int x=2; x<interface->SIZE_X_-2; x++) {
-    for (int y=0; y<interface->SIZE_Y_; y++) {
-      EXPECT_FALSE(interface->is_pixel_on(x, y));
-    }
+  for (int x = 2; x < interface->SIZE_X_ - 2; x++) {
+    for (int y = 0; y < interface->SIZE_Y_; y++) { EXPECT_FALSE(interface->is_pixel_on(x, y)); }
   }
 }
 
 TEST(instructions, Ex9E) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   registers->v_[0].poke(0x0);
   registers->v_[1].poke(0x1);
 
   interface->simulate_keypress(SDLK_1);
 
-  for (int i=0; i<=100; i++) {
+  for (int i = 0; i <= 100; i++) {
     interface->poll_events();
     interface->get_keys();
     if (interface->is_pressed(0x1)) {
@@ -776,18 +914,22 @@ TEST(instructions, Ex9E) {
 }
 
 TEST(instructions, ExA1) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   registers->v_[0].poke(0x0);
   registers->v_[1].poke(0x1);
 
   interface->simulate_keypress(SDLK_1);
 
-  for (int i=0; i<=100; i++) {
+  for (int i = 0; i <= 100; i++) {
     interface->poll_events();
     interface->get_keys();
     if (interface->is_pressed(0x1)) {
@@ -805,15 +947,18 @@ TEST(instructions, ExA1) {
   romParser->set_opcode(0xE1A1);
   romParser->decode();
   EXPECT_EQ(registers->pc_.peek(), 0x202);
-
 }
 
 TEST(instructions, Fx07) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
-  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   registers->dt_.poke(0x0);
   romParser->set_opcode(0xF007);
@@ -824,15 +969,18 @@ TEST(instructions, Fx07) {
   romParser->set_opcode(0xFF07);
   romParser->decode();
   EXPECT_EQ(registers->v_[0xf].peek(), 0xf);
-
 }
 
 TEST(instructions, Fx15) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
-  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   registers->v_[0xf].poke(0xf);
   romParser->set_opcode(0xFF15);
@@ -846,11 +994,15 @@ TEST(instructions, Fx15) {
 }
 
 TEST(instructions, Fx18) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   registers->v_[0xf].poke(0xf);
   romParser->set_opcode(0xFF18);
@@ -864,11 +1016,15 @@ TEST(instructions, Fx18) {
 }
 
 TEST(instructions, Fx1E) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   registers->i_.poke(0x0);
   registers->v_[0xe].poke(0x0);
@@ -897,11 +1053,15 @@ TEST(instructions, Fx1E) {
 }
 
 TEST(instructions, Fx0A) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->pc_.peek(), 0x200);
   registers->v_[0xD].poke(0xa);
@@ -913,7 +1073,7 @@ TEST(instructions, Fx0A) {
 
   interface->simulate_keypress(SDLK_1);
 
-  for (int i=0; i<=100; i++) {
+  for (int i = 0; i <= 100; i++) {
     interface->poll_events();
     interface->get_keys();
     if (interface->is_pressed(0x1)) {
@@ -928,16 +1088,18 @@ TEST(instructions, Fx0A) {
   romParser->decode();
   EXPECT_EQ(registers->pc_.peek(), 0x1fe);
   EXPECT_EQ(registers->v_[0xD].peek(), 0x1);
-
-
 }
 
 TEST(instructions, Fx29) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   registers->v_[0x0].poke(0x0000);
   romParser->set_opcode(0xF029);
@@ -949,100 +1111,165 @@ TEST(instructions, Fx29) {
   romParser->decode();
   EXPECT_EQ(registers->i_.peek(), 0);
 
-  for (uint8_t i=0; i<=0xf; i++) {
+  for (uint8_t i = 0; i <= 0xf; i++) {
     registers->v_[i].poke(i);
     instructions->ld_Fx29(i);
-    EXPECT_EQ(registers->i_.peek(), i*5);
+    EXPECT_EQ(registers->i_.peek(), i * 5);
   }
 }
 
 TEST(instructions, Fx33) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   registers->v_[0x0].poke(0x0000);
   romParser->set_opcode(0xF033);
   romParser->decode();
   EXPECT_EQ(memory->peek(registers->i_.peek()), 0);
-  EXPECT_EQ(memory->peek(registers->i_.peek()+1), 0);
-  EXPECT_EQ(memory->peek(registers->i_.peek()+2), 0);
+  EXPECT_EQ(memory->peek(registers->i_.peek() + 1), 0);
+  EXPECT_EQ(memory->peek(registers->i_.peek() + 2), 0);
 
   registers->i_.poke(3);
   registers->v_[0x0].poke(255);
   romParser->set_opcode(0xF033);
   romParser->decode();
   EXPECT_EQ(memory->peek(registers->i_.peek()), 2);
-  EXPECT_EQ(memory->peek(registers->i_.peek()+1), 5);
-  EXPECT_EQ(memory->peek(registers->i_.peek()+2), 5);
+  EXPECT_EQ(memory->peek(registers->i_.peek() + 1), 5);
+  EXPECT_EQ(memory->peek(registers->i_.peek() + 2), 5);
 
-  for (uint8_t i=0; i<=0x33; i++) {
-    registers->v_[0x0].poke(i*5);
+  for (uint8_t i = 0; i <= 0x33; i++) {
+    registers->v_[0x0].poke(i * 5);
     romParser->set_opcode(0xF033);
     romParser->decode();
 
-    EXPECT_EQ(
-            memory->peek(registers->i_.peek()) * 100 +
-            memory->peek(registers->i_.peek()+1) * 10 +
-            memory->peek(registers->i_.peek()+2)
-                    , i*5);
-    std::cout << (int)i*5 << "\n";
+    EXPECT_EQ(memory->peek(registers->i_.peek()) * 100 +
+                      memory->peek(registers->i_.peek() + 1) * 10 +
+                      memory->peek(registers->i_.peek() + 2),
+              i * 5);
+    std::cout << (int) i * 5 << "\n";
   }
 }
 
 TEST(instructions, Fx55) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
-  for (uint8_t i=0; i<=0xF; i++) {
-    registers->v_[i].poke(i);
-  }
+  for (uint8_t i = 0; i <= 0xF; i++) { registers->v_[i].poke(i); }
 
   romParser->set_opcode(0xFF55);
   romParser->decode();
 
-  for (uint8_t i=0; i<=0xF; i++) {
-    EXPECT_EQ(memory->peek(registers->i_.peek()+i), registers->v_[i].peek());
+  for (uint8_t i = 0; i <= 0xF; i++) {
+    EXPECT_EQ(memory->peek(registers->i_.peek() + i), registers->v_[i].peek());
   }
-} // todo
 
-TEST(instructions, Fx65) {
+  EXPECT_EQ(registers->i_.peek(), 0);
+}
+
+TEST(instructions, Fx55_increments_i) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, true, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
+
+  int initial_i_value = registers->i_.peek();
+
+  for (uint8_t i = 0; i <= 0xF; i++) { registers->v_[i].poke(i); }
+
+  romParser->set_opcode(0xFF55);
+  romParser->decode();
+
+  for (uint8_t i = 0; i <= 0xF; i++) {
+    EXPECT_EQ(memory->peek(initial_i_value + i), registers->v_[i].peek());
+  }
+  EXPECT_EQ(registers->i_.peek(), initial_i_value + 0xf + 1);
+}
+
+TEST(instructions, Fx65) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
+  std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
+  std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
+  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   romParser->set_opcode(0xFF65);
   romParser->decode();
 
-  for (uint8_t i=0; i<=0xF; i++) {
-    EXPECT_EQ(memory->peek(registers->i_.peek()+i), registers->v_[i].peek());
+  for (uint8_t i = 0; i <= 0xF; i++) {
+    EXPECT_EQ(memory->peek(registers->i_.peek() + i), registers->v_[i].peek());
   }
 }
 
-TEST(instructions, 00EA) {
+TEST(instructions, Fx65_increments_i) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, true, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
+
+  int initial_i_value = registers->i_.peek();
+
+  romParser->set_opcode(0xFF65);
+  romParser->decode();
+
+  for (uint8_t i = 0; i <= 0xF; i++) {
+    EXPECT_EQ(memory->peek(initial_i_value + i), registers->v_[i].peek());
+  }
+  EXPECT_EQ(registers->i_.peek(), initial_i_value + 0xf + 1);
+}
+
+TEST(instructions, 00EA) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
+  std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
+  std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
+  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   romParser->set_opcode(0x800F);
   EXPECT_THROW(romParser->decode(), std::runtime_error);
 }
 
 TEST(instructions, 02D8) {
+  std::shared_ptr<Configuration> configuration =
+          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions = std::make_shared<Instructions>(memory, registers, interface);
-  std::shared_ptr<RomParser> romParser = std::make_shared<RomParser>("./test/cls.ch8", memory, registers, instructions);
+  std::shared_ptr<Instructions> instructions =
+          std::make_shared<Instructions>(configuration, memory, registers, interface);
+  std::shared_ptr<RomParser> romParser =
+          std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   romParser->set_opcode(0x02D8);
   EXPECT_NO_THROW(romParser->decode());

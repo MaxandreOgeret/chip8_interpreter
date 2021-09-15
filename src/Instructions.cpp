@@ -224,9 +224,12 @@ void Instructions::ld_Fx33(regnb_t vx) {
  */
 void Instructions::ld_Fx55(regnb_t vx) {
   for (int i = 0; i <= vx; i++) {
-    memory_->poke(registers_->v_[i].peek(), registers_->i_.peek() + i);
-
-    if (configuration_->isCFx55Fx65IncrementsI()) { registers_->i_.increment(); }
+    if (configuration_->isCFx55Fx65IncrementsI()) {
+      memory_->poke(registers_->v_[i].peek(), registers_->i_.peek());
+      registers_->i_.increment(1);
+    } else {
+      memory_->poke(registers_->v_[i].peek(), registers_->i_.peek() + i);
+    }
   }
 }
 
@@ -236,8 +239,11 @@ void Instructions::ld_Fx55(regnb_t vx) {
  */
 void Instructions::ld_Fx65(regnb_t vx) {
   for (int i = 0; i <= vx; i++) {
-    registers_->v_[i].poke(memory_->peek(registers_->i_.peek() + i));
-
-    if (configuration_->isCFx55Fx65IncrementsI()) { registers_->i_.increment(); }
+    if (configuration_->isCFx55Fx65IncrementsI()) {
+      registers_->v_[i].poke(memory_->peek(registers_->i_.peek()));
+      registers_->i_.increment();
+    } else {
+      registers_->v_[i].poke(memory_->peek(registers_->i_.peek() + i));
+    }
   }
 }
