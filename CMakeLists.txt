@@ -6,16 +6,20 @@ project(CHIP8)
 set(CMAKE_CXX_STANDARD 17)
 include(FetchContent)
 
-
-find_package(SDL2 REQUIRED)
+# Download and install SDL2
+FetchContent_Declare(
+        SDL2
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+        GIT_TAG release-2.0.16
+        )
 
 # Download and install TCLAP
 FetchContent_Declare(
-        TCLAP
+        tclap
         GIT_REPOSITORY https://github.com/mirror/tclap.git
-        GIT_TAG v1.2.4
-)
-FetchContent_MakeAvailable(TCLAP)
+        GIT_TAG v1.2.2
+        )
+FetchContent_GetProperties(tclap)
 
 # Download and install GoogleTest
 FetchContent_Declare(
@@ -23,9 +27,8 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/google/googletest.git
         GIT_TAG release-1.11.0
 )
-FetchContent_MakeAvailable(googletest)
 
-include_directories(include ${SDL2_INCLUDE_DIRS})
+FetchContent_MakeAvailable(SDL2 tclap GoogleTest)
 
 add_library(CHIP8_L
         src/Instructions.cpp
@@ -43,23 +46,31 @@ add_executable(CHIP8
 
 target_link_libraries(CHIP8
         CHIP8_L
-        ${SDL2_LIBRARIES}
+        SDL2
         )
 
-##################################
+target_include_directories(CHIP8_L
+        PRIVATE ${sdl2_SOURCE_DIR}/include
+        PUBLIC include
+        )
+
+target_include_directories(CHIP8
+        PRIVATE ${tclap_SOURCE_DIR}/include
+        )
+
 enable_testing()
 
 add_executable(init
         test/init.cpp
         test/instructions.cpp
         src/Memory.cpp
-)
+        )
 
 target_link_libraries(init
         CHIP8_L
-        ${SDL2_LIBRARIES}
+        SDL2main
         gtest_main
-)
+        )
 
 include(GoogleTest)
 gtest_discover_tests(init)
