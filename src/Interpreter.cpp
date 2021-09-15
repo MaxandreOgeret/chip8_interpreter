@@ -35,14 +35,12 @@ void Interpreter::loop() {
     currentStartTime = system_clock::now();
     nextStartTime = currentStartTime + intervalPeriodMillis;
 
-    // ---- Stuff happens here ----
     registers_->trigger_timers();
     interface_->toogle_buzzer();
     interface_->poll_events();
     interface_->get_keys();
     romParser_->step();
     romParser_->decode();
-    // ---- ------------------ ----
 
     stop = stop || interface_->requests_close();
     std::this_thread::sleep_until(nextStartTime);

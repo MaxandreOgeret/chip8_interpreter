@@ -17,10 +17,12 @@ Interface::Interface(const std::shared_ptr<reg::RegisterManager> & registers, bo
   want_.callback = Interface::forward_audio_callback;
   want_.userdata = &sound_userdata_;
 
-  if (SDL_OpenAudio(&want_, &have_) != 0)
+  if (SDL_OpenAudio(&want_, &have_) != 0) {
     SDL_LogError(SDL_LOG_CATEGORY_AUDIO, "Failed to open audio: %s", SDL_GetError());
-  if (want_.format != have_.format)
+  }
+  if (want_.format != have_.format) {
     SDL_LogError(SDL_LOG_CATEGORY_AUDIO, "Failed to get the desired AudioSpec");
+  }
 
   window = SDL_CreateWindow("CHIP8", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                             SIZE_X_ * SIZE_MULTIPLIER_, SIZE_Y_ * SIZE_MULTIPLIER_,
@@ -29,8 +31,6 @@ Interface::Interface(const std::shared_ptr<reg::RegisterManager> & registers, bo
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
   bpp_ = SDL_GetWindowSurface(window)->format->BytesPerPixel;
   SDL_Delay(1000);
-
-  screen_memory_ = std::vector<std::vector<bool>>(SIZE_X_, std::vector<bool>(SIZE_Y_, false));
 }
 
 Interface::~Interface() {
@@ -67,8 +67,6 @@ void Interface::draw_pixel(unsigned short x, unsigned short y, bool state) {
   SDL_Rect rect = {normalize_x(x), normalize_y(y), SIZE_MULTIPLIER_, SIZE_MULTIPLIER_};
   SDL_RenderFillRect(renderer, &rect);
 }
-
-//void Interface::render() { SDL_RenderPresent(renderer); }
 
 void Interface::render() {
   for (u_int8_t x = 0; x < SIZE_X_; x++) {

@@ -45,7 +45,7 @@ namespace reg {
     void trigger_timers();
 
   private:
-    unsigned short int counter_;
+    unsigned short int counter_ = 0;
     unsigned short int decrement_interval_;
   };
 }// namespace reg
