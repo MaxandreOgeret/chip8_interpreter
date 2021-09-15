@@ -38,7 +38,7 @@ add_library(CHIP8_L
 
 add_executable(CHIP8
         src/main.cpp
-        src/Emulator.cpp
+        src/Interpreter.cpp
         )
 
 target_link_libraries(CHIP8

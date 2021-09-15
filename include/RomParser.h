@@ -4,8 +4,8 @@
 #ifndef CHIP8_ROMPARSER_H
 #define CHIP8_ROMPARSER_H
 
-#include "Instructions.h"
 #include "Configuration.h"
+#include "Instructions.h"
 #include "Memory.h"
 #include "register/RegisterManager.h"
 

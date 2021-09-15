@@ -1,7 +1,7 @@
 // (c) 2021 Maxandre Ogeret
 // Licensed under MIT License
 
-#include "Emulator.h"
+#include "Interpreter.h"
 
 volatile static sig_atomic_t stop = 0;
 const unsigned short int FREQ = 500;
@@ -12,7 +12,7 @@ void inthand(int signum) {
   stop = 1;
 }
 
-Emulator::Emulator(std::shared_ptr<Configuration> configuration) {
+Interpreter::Interpreter(std::shared_ptr<Configuration> configuration) {
   signal(SIGINT, inthand);
   signal(SIGTERM, inthand);
 
@@ -23,7 +23,7 @@ Emulator::Emulator(std::shared_ptr<Configuration> configuration) {
   romParser_ = std::make_shared<RomParser>(configuration, memory_, registers_, instructions_);
 }
 
-void Emulator::loop() {
+void Interpreter::loop() {
 
   const milliseconds intervalPeriodMillis{static_cast<int>((1. / FREQ) * 1000)};
 

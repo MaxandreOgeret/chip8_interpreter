@@ -85,9 +85,7 @@ void Instructions::sub_8xy5(regnb_t vx, regnb_t vy) {
  * @param vy
  */
 void Instructions::shr_8xy6(regnb_t vx, regnb_t vy) {
-  if (configuration_->isC8Xy68XyESetsVy()) {
-      registers_->v_[vx].poke(registers_->v_[vy].peek());
-  }
+  if (configuration_->isC8Xy68XyESetsVy()) { registers_->v_[vx].poke(registers_->v_[vy].peek()); }
   registers_->v_[0xf].poke(registers_->v_[vx].peek() & 0x1);
   registers_->v_[vx].poke(registers_->v_[vx].peek() >> 1);
 }
@@ -103,9 +101,7 @@ void Instructions::subn_8xy7(regnb_t vx, regnb_t vy) {
  * @param vy
  */
 void Instructions::shl_8xyE(regnb_t vx, regnb_t vy) {
-  if (configuration_->isC8Xy68XyESetsVy()) {
-      registers_->v_[vx].poke(registers_->v_[vy].peek());
-  }
+  if (configuration_->isC8Xy68XyESetsVy()) { registers_->v_[vx].poke(registers_->v_[vy].peek()); }
 
   registers_->v_[0xf].poke(registers_->v_[vx].peek() >> 7);
   registers_->v_[vx].poke(registers_->v_[vx].peek() << 1);
@@ -230,9 +226,7 @@ void Instructions::ld_Fx55(regnb_t vx) {
   for (int i = 0; i <= vx; i++) {
     memory_->poke(registers_->v_[i].peek(), registers_->i_.peek() + i);
 
-    if (configuration_->isCFx55Fx65IncrementsI()) {
-          registers_->i_.increment();
-    }
+    if (configuration_->isCFx55Fx65IncrementsI()) { registers_->i_.increment(); }
   }
 }
 
@@ -244,8 +238,6 @@ void Instructions::ld_Fx65(regnb_t vx) {
   for (int i = 0; i <= vx; i++) {
     registers_->v_[i].poke(memory_->peek(registers_->i_.peek() + i));
 
-    if (configuration_->isCFx55Fx65IncrementsI()) {
-      registers_->i_.increment();
-    }
+    if (configuration_->isCFx55Fx65IncrementsI()) { registers_->i_.increment(); }
   }
 }

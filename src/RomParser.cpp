@@ -3,10 +3,12 @@
 
 #include "RomParser.h"
 
-RomParser::RomParser(std::shared_ptr<Configuration> configuration, std::shared_ptr<mem::Memory> memory,
+RomParser::RomParser(std::shared_ptr<Configuration> configuration,
+                     std::shared_ptr<mem::Memory> memory,
                      std::shared_ptr<reg::RegisterManager> registerManager,
                      std::shared_ptr<Instructions> instructions)
-    : configuration_(configuration), memory_(memory), registers_(registerManager), instructions_(instructions) {
+    : configuration_(configuration), memory_(memory), registers_(registerManager),
+      instructions_(instructions) {
   std::cout << "Loading ROM: " << configuration_->getRomPath() << "\n";
 
   source_ = std::ifstream(configuration_->getRomPath(), std::ios_base::binary);

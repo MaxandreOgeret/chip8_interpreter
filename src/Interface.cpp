@@ -30,8 +30,7 @@ Interface::Interface(const std::shared_ptr<reg::RegisterManager> & registers, bo
   bpp_ = SDL_GetWindowSurface(window)->format->BytesPerPixel;
   SDL_Delay(1000);
 
-  screen_memory_ =
-          std::vector<std::vector<bool>>(SIZE_X_, std::vector<bool>(SIZE_Y_, false));
+  screen_memory_ = std::vector<std::vector<bool>>(SIZE_X_, std::vector<bool>(SIZE_Y_, false));
 }
 
 Interface::~Interface() {
@@ -50,9 +49,7 @@ bool Interface::requests_close() const {
 
 void Interface::clear() {
   for (u_int8_t x = 0; x < SIZE_X_; x++) {
-    for (u_int8_t y = 0; y < SIZE_Y_; y++) {
-      set_pixel_state(x, y, false);
-    }
+    for (u_int8_t y = 0; y < SIZE_Y_; y++) { set_pixel_state(x, y, false); }
   }
   render();
 }

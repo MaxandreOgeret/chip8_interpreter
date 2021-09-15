@@ -1,8 +1,8 @@
 // (c) 2021 Maxandre Ogeret
 // Licensed under MIT License
 
-#ifndef CHIP8_EMULATOR_H
-#define CHIP8_EMULATOR_H
+#ifndef CHIP8_INTERPRETER_H
+#define CHIP8_INTERPRETER_H
 
 #include <chrono>
 #include <csignal>
@@ -17,9 +17,9 @@
 #include "RomParser.h"
 #include "register/RegisterManager.h"
 
-class Emulator {
+class Interpreter {
 public:
-  Emulator(std::shared_ptr<Configuration> configuration);
+  Interpreter(std::shared_ptr<Configuration> configuration);
   void loop();
 
 private:
@@ -31,4 +31,4 @@ private:
 };
 
 
-#endif//CHIP8_EMULATOR_H
+#endif//CHIP8_INTERPRETER_H
