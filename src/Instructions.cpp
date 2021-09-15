@@ -13,14 +13,18 @@ Instructions::Instructions(const std::shared_ptr<mem::Memory> & memory,
 
 void Instructions::sys_0nnn(address_t addr) {}
 
-void Instructions::cls_00E0() { interface_->clear(); }
+void Instructions::cls_00E0() {
+  interface_->clear();
+}
 
 void Instructions::ret_00EE() {
   registers_->pc_.poke(registers_->stack_.pop_back());
   registers_->sp_.decrement();
 }
 
-void Instructions::jp_1nnn(address_t addr) { registers_->pc_.poke(addr); }
+void Instructions::jp_1nnn(address_t addr) {
+  registers_->pc_.poke(addr);
+}
 
 void Instructions::call_2nnn(address_t addr) {
   registers_->sp_.increment();
@@ -40,7 +44,9 @@ void Instructions::se_5xy0(regnb_t vx, regnb_t vy) {
   if (registers_->v_[vx].peek() == registers_->v_[vy].peek()) { registers_->pc_.increment(2); }
 }
 
-void Instructions::ld_6xkk(regnb_t vx, uint8_t byte) { registers_->v_[vx].poke(byte); }
+void Instructions::ld_6xkk(regnb_t vx, uint8_t byte) {
+  registers_->v_[vx].poke(byte);
+}
 
 void Instructions::add_7xkk(regnb_t vx, uint8_t byte) {
   registers_->v_[vx].poke(registers_->v_[vx].peek() + byte);
@@ -78,7 +84,7 @@ void Instructions::sub_8xy5(regnb_t vx, regnb_t vy) {
  * @param vy
  */
 void Instructions::shr_8xy6(regnb_t vx, regnb_t vy) {
-//  registers_->v_[vx].poke(registers_->v_[vy].peek());// Should be disabled at will by conf
+  //  registers_->v_[vx].poke(registers_->v_[vy].peek());// Should be disabled at will by conf
   registers_->v_[0xf].poke(registers_->v_[vx].peek() & 0x1);
   registers_->v_[vx].poke(registers_->v_[vx].peek() >> 1);
 }
@@ -107,7 +113,9 @@ void Instructions::sne_9xy0(regnb_t vx, regnb_t vy) {
  * rmk Ambiguous https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#annn-set-index
  * @param addr
  */
-void Instructions::ld_Annn(address_t addr) { registers_->i_.poke(addr); }
+void Instructions::ld_Annn(address_t addr) {
+  registers_->i_.poke(addr);
+}
 
 /**
  * rmk Ambiguous https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#bnnn-jump-with-offset
@@ -129,16 +137,16 @@ void Instructions::rnd_Cxkk(regnb_t vx, uint8_t byte) {
  * @param n
  */
 void Instructions::drw_Dxyn(regnb_t vx, regnb_t vy, uint8_t n) {
-  y_ = registers_->v_[vy].peek() % 32;
+  y_ = registers_->v_[vy].peek() % interface_->SIZE_Y_;
   registers_->v_[0xf].poke(0);
 
   for (int row = 0; row < n; row++) {
     sprite_byte_ = memory_->peek(registers_->i_.peek() + row);
-    x_ = registers_->v_[vx].peek() % 64;
+    x_ = registers_->v_[vx].peek() % interface_->SIZE_X_;
 
     for (uint8_t pixel = 0; pixel < 8; pixel++) {
-      if (x_ >= 64) { x_ = 0; }
-      if (y_ >= 32) { y_ = 0; }
+      if (x_ >= interface_->SIZE_X_) { x_ = 0; }
+      if (y_ >= interface_->SIZE_Y_) { y_ = 0; }
 
       sprite_pixel_is_on_ = sprite_byte_ & (uint8_t) pow(2, 7 - pixel);
       disp_pixel_is_on_ = interface_->is_pixel_on(x_, y_);
@@ -164,7 +172,9 @@ void Instructions::sknp_ExA1(regnb_t vx) {
   if (!interface_->is_pressed(registers_->v_[vx].peek())) { registers_->pc_.increment(2); }
 }
 
-void Instructions::ld_Fx07(regnb_t vx) { registers_->v_[vx].poke(registers_->dt_.peek()); }
+void Instructions::ld_Fx07(regnb_t vx) {
+  registers_->v_[vx].poke(registers_->dt_.peek());
+}
 
 void Instructions::ld_Fx0A(regnb_t vx) {
   if (interface_->get_any_pressed() != 0x10) {
@@ -174,9 +184,13 @@ void Instructions::ld_Fx0A(regnb_t vx) {
   registers_->pc_.decrement(2);
 }
 
-void Instructions::ld_Fx15(regnb_t vx) { registers_->dt_.poke(registers_->v_[vx].peek()); }
+void Instructions::ld_Fx15(regnb_t vx) {
+  registers_->dt_.poke(registers_->v_[vx].peek());
+}
 
-void Instructions::ld_Fx18(regnb_t vx) { registers_->st_.poke(registers_->v_[vx].peek()); }
+void Instructions::ld_Fx18(regnb_t vx) {
+  registers_->st_.poke(registers_->v_[vx].peek());
+}
 
 /**
  * @param vx
@@ -204,7 +218,7 @@ void Instructions::ld_Fx33(regnb_t vx) {
 void Instructions::ld_Fx55(regnb_t vx) {
   for (int i = 0; i <= vx; i++) {
     memory_->poke(registers_->v_[i].peek(), registers_->i_.peek() + i);
-//    registers_->i_.increment();
+    //    registers_->i_.increment();
   }
 }
 
@@ -215,6 +229,6 @@ void Instructions::ld_Fx55(regnb_t vx) {
 void Instructions::ld_Fx65(regnb_t vx) {
   for (int i = 0; i <= vx; i++) {
     registers_->v_[i].poke(memory_->peek(registers_->i_.peek() + i));
-//    registers_->i_.increment();
+    //    registers_->i_.increment();
   }
 }

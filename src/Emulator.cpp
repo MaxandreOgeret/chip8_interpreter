@@ -8,9 +8,11 @@ const unsigned short int FREQ = 500;
 
 using namespace std::chrono;
 
-void inthand(int signum) { stop = 1; }
+void inthand(int signum) {
+  stop = 1;
+}
 
-Emulator::Emulator(std::string romPath) {
+Emulator::Emulator(std::string romPath, bool conf_1, bool conf_2, bool conf_3, bool conf_4) {
   signal(SIGINT, inthand);
   signal(SIGTERM, inthand);
 

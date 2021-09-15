@@ -37,8 +37,7 @@ public:
   const unsigned short int SIZE_X_ = 64;
   const unsigned short int SIZE_Y_ = 32;
   const unsigned short int SIZE_MULTIPLIER_ = 20;
-  std::vector<std::vector<bool>> screen_memory_ =
-          std::vector<std::vector<bool>>(SIZE_X_, std::vector<bool>(SIZE_Y_, false));
+  std::vector<std::vector<bool>> screen_memory_;
 
   /**
    * For testing/debugging

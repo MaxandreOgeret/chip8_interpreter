@@ -4,9 +4,9 @@
 #ifndef CHIP8_INSTRUCTIONS_H
 #define CHIP8_INSTRUCTIONS_H
 
+#include <iostream>
 #include <memory>
 #include <random>
-#include <iostream>
 
 #include "Interface.h"
 #include "Memory.h"
@@ -17,7 +17,9 @@ using namespace reg;
 
 class Instructions {
 public:
-  Instructions(const std::shared_ptr<mem::Memory> &memory, const std::shared_ptr<reg::RegisterManager> &registers, const std::shared_ptr<Interface> & interface);
+  Instructions(const std::shared_ptr<mem::Memory> & memory,
+               const std::shared_ptr<reg::RegisterManager> & registers,
+               const std::shared_ptr<Interface> & interface);
 
 private:
   std::shared_ptr<mem::Memory> memory_;

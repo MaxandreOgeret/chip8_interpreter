@@ -29,6 +29,9 @@ Interface::Interface(const std::shared_ptr<reg::RegisterManager> & registers, bo
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
   bpp_ = SDL_GetWindowSurface(window)->format->BytesPerPixel;
   SDL_Delay(1000);
+
+  screen_memory_ =
+          std::vector<std::vector<bool>>(SIZE_X_, std::vector<bool>(SIZE_Y_, false));
 }
 
 Interface::~Interface() {
@@ -37,7 +40,9 @@ Interface::~Interface() {
   SDL_Quit();
 }
 
-void Interface::poll_events() { SDL_PollEvent(&events_); }
+void Interface::poll_events() {
+  SDL_PollEvent(&events_);
+}
 
 bool Interface::requests_close() const {
   return events_.type == SDL_WINDOWEVENT && events_.window.event == SDL_WINDOWEVENT_CLOSE;
@@ -45,7 +50,9 @@ bool Interface::requests_close() const {
 
 void Interface::clear() {
   for (u_int8_t x = 0; x < SIZE_X_; x++) {
-    for (u_int8_t y = 0; y < SIZE_Y_; y++) { set_pixel_state(x, y, false); }
+    for (u_int8_t y = 0; y < SIZE_Y_; y++) {
+      set_pixel_state(x, y, false);
+    }
   }
   render();
 }

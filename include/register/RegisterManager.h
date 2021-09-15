@@ -7,9 +7,9 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
-#include <vector>
-#include <stdexcept>
 #include <iostream>
+#include <stdexcept>
+#include <vector>
 
 #include "register/Register.h"
 #include "register/Stack.h"

@@ -4,11 +4,11 @@
 #ifndef CHIP8_REGISTER_H
 #define CHIP8_REGISTER_H
 
-#include <type_traits>
-#include <memory>
 #include <limits>
+#include <memory>
+#include <type_traits>
 
-template <class T>
+template<class T>
 class Register {
 public:
   Register();
@@ -16,6 +16,7 @@ public:
   T peek();
   void increment(short int number = 1);
   void decrement(short int number = 1);
+
 private:
   T value_;
 };

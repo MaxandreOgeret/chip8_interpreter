@@ -4,11 +4,11 @@
 #ifndef CHIP8_STACK_H
 #define CHIP8_STACK_H
 
-#include <vector>
 #include <cstdint>
 #include <exception>
+#include <vector>
 
-template <class T>
+template<class T>
 class Stack {
 public:
   Stack(size_t max_size);
@@ -24,12 +24,12 @@ private:
 };
 
 template<class T>
-Stack<T>::Stack(size_t max_size): max_size_(max_size) {}
+Stack<T>::Stack(size_t max_size) : max_size_(max_size) {}
 
 template<class T>
 void Stack<T>::push_back(T value) {
   if (values_.size() > max_size_) {
-    throw std::runtime_error("Stack Overflow ("+ std::to_string(max_size_) + ")");
+    throw std::runtime_error("Stack Overflow (" + std::to_string(max_size_) + ")");
   }
   values_.push_back(value);
 }

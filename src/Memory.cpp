@@ -28,4 +28,6 @@ uint8_t Memory::peek(address_t address) {
   return memory[address];
 }
 
-void Memory::init() { poke(FONT_, 0x000); }
+void Memory::init() {
+  poke(FONT_, 0x000);
+}

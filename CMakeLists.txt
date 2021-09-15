@@ -4,19 +4,26 @@
 cmake_minimum_required(VERSION 3.19)
 project(CHIP8)
 set(CMAKE_CXX_STANDARD 17)
+include(FetchContent)
+
 
 find_package(SDL2 REQUIRED)
 
-##################################
+# Download and install TCLAP
+FetchContent_Declare(
+        TCLAP
+        GIT_REPOSITORY https://github.com/mirror/tclap.git
+        GIT_TAG v1.2.4
+)
+FetchContent_MakeAvailable(TCLAP)
+
 # Download and install GoogleTest
-include(FetchContent)
 FetchContent_Declare(
         googletest
         GIT_REPOSITORY https://github.com/google/googletest.git
         GIT_TAG release-1.11.0
 )
 FetchContent_MakeAvailable(googletest)
-##################################
 
 include_directories(include ${SDL2_INCLUDE_DIRS})
 
@@ -26,6 +33,7 @@ add_library(CHIP8_L
         src/Interface.cpp
         src/RomParser.cpp
         src/RegisterManager.cpp
+        src/Configuration.cpp
         )
 
 add_executable(CHIP8

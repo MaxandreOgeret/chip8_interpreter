@@ -4,27 +4,29 @@
 #ifndef CHIP8_ROMPARSER_H
 #define CHIP8_ROMPARSER_H
 
-#include "Memory.h"
 #include "Instructions.h"
+#include "Memory.h"
 #include "register/RegisterManager.h"
 
 #include "iostream"
+#include <exception>
 #include <fstream>
 #include <memory>
-#include <vector>
-#include <exception>
 #include <sstream>
+#include <vector>
 
 class RomParser {
 public:
-  explicit RomParser(std::string romPath, std::shared_ptr<mem::Memory> memory, std::shared_ptr<reg::RegisterManager> registerManager, std::shared_ptr<Instructions> instructions);
+  explicit RomParser(std::string romPath, std::shared_ptr<mem::Memory> memory,
+                     std::shared_ptr<reg::RegisterManager> registerManager,
+                     std::shared_ptr<Instructions> instructions);
   std::shared_ptr<mem::Memory> memory_;
   std::shared_ptr<reg::RegisterManager> registers_;
   std::shared_ptr<Instructions> instructions_;
 
   void step();
   void decode();
-  uint16_t get_from_opcode(const uint16_t &opcode, const uint16_t mask);
+  uint16_t get_from_opcode(const uint16_t & opcode, const uint16_t mask);
   /**
    * For testing/debugging
    * @param opcode

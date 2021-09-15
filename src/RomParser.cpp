@@ -185,4 +185,6 @@ uint16_t RomParser::get_from_opcode(const uint16_t & opcode, const uint16_t mask
   return (opcode & mask) >> c;
 }
 
-void RomParser::set_opcode(uint16_t opcode) { opcode_ = opcode; }
+void RomParser::set_opcode(uint16_t opcode) {
+  opcode_ = opcode;
+}

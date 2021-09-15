@@ -4,10 +4,10 @@
 #ifndef CHIP8_EMULATOR_H
 #define CHIP8_EMULATOR_H
 
-#include <memory>
 #include <chrono>
 #include <csignal>
 #include <iostream>
+#include <memory>
 #include <thread>
 
 #include "Instructions.h"
@@ -18,7 +18,8 @@
 
 class Emulator {
 public:
-  Emulator(std::string romPath);
+  Emulator(std::string romPath, bool conf_1 = false, bool conf_2 = false, bool conf_3 = false,
+           bool conf_4 = false);
   void loop();
 
 private:
