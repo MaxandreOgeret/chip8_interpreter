@@ -8,6 +8,7 @@
 #include <memory>
 #include <random>
 
+#include "Configuration.h"
 #include "Interface.h"
 #include "Memory.h"
 #include "register/RegisterManager.h"
@@ -17,11 +18,13 @@ using namespace reg;
 
 class Instructions {
 public:
-  Instructions(const std::shared_ptr<mem::Memory> & memory,
+  Instructions(const std::shared_ptr<Configuration> & configuration,
+               const std::shared_ptr<mem::Memory> & memory,
                const std::shared_ptr<reg::RegisterManager> & registers,
                const std::shared_ptr<Interface> & interface);
 
 private:
+  std::shared_ptr<Configuration> configuration_;
   std::shared_ptr<mem::Memory> memory_;
   std::shared_ptr<reg::RegisterManager> registers_;
   std::shared_ptr<Interface> interface_;
@@ -218,6 +221,14 @@ public:
    * @param addr
    */
   void jp_Bnnn(address_t addr);
+
+  /**
+   * Bxnn - JP V0, addr
+   * Jump to the address xnn + VX
+   * The program counter is set to nnn plus the value of V0.
+   * @param addr
+   */
+  void jp_Bxnn(regnb_t vx, address_t addr);
 
   /**
    * Cxkk - RND Vx, byte

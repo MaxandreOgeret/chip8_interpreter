@@ -10,6 +10,7 @@
 #include <memory>
 #include <thread>
 
+#include "Configuration.h"
 #include "Instructions.h"
 #include "Interface.h"
 #include "Memory.h"
@@ -18,8 +19,7 @@
 
 class Emulator {
 public:
-  Emulator(std::string romPath, bool conf_1 = false, bool conf_2 = false, bool conf_3 = false,
-           bool conf_4 = false);
+  Emulator(std::shared_ptr<Configuration> configuration);
   void loop();
 
 private:

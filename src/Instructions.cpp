@@ -3,10 +3,11 @@
 
 #include "Instructions.h"
 
-Instructions::Instructions(const std::shared_ptr<mem::Memory> & memory,
+Instructions::Instructions(const std::shared_ptr<Configuration> & configuration,
+                           const std::shared_ptr<mem::Memory> & memory,
                            const std::shared_ptr<reg::RegisterManager> & registers,
                            const std::shared_ptr<Interface> & interface)
-    : memory_(memory), registers_(registers), interface_(interface) {
+    : memory_(memory), registers_(registers), interface_(interface), configuration_(configuration) {
   mt = std::mt19937(rd());
   randbyte = std::make_unique<std::uniform_int_distribution<uint8_t>>(0, 255);
 }
@@ -84,7 +85,9 @@ void Instructions::sub_8xy5(regnb_t vx, regnb_t vy) {
  * @param vy
  */
 void Instructions::shr_8xy6(regnb_t vx, regnb_t vy) {
-  //  registers_->v_[vx].poke(registers_->v_[vy].peek());// Should be disabled at will by conf
+  if (configuration_->isC8Xy68XyESetsVy()) {
+      registers_->v_[vx].poke(registers_->v_[vy].peek());
+  }
   registers_->v_[0xf].poke(registers_->v_[vx].peek() & 0x1);
   registers_->v_[vx].poke(registers_->v_[vx].peek() >> 1);
 }
@@ -100,7 +103,10 @@ void Instructions::subn_8xy7(regnb_t vx, regnb_t vy) {
  * @param vy
  */
 void Instructions::shl_8xyE(regnb_t vx, regnb_t vy) {
-  //  registers_->v_[vx].poke(registers_->v_[vy].peek());// Should be disabled at will by conf
+  if (configuration_->isC8Xy68XyESetsVy()) {
+      registers_->v_[vx].poke(registers_->v_[vy].peek());
+  }
+
   registers_->v_[0xf].poke(registers_->v_[vx].peek() >> 7);
   registers_->v_[vx].poke(registers_->v_[vx].peek() << 1);
 }
@@ -109,10 +115,6 @@ void Instructions::sne_9xy0(regnb_t vx, regnb_t vy) {
   if (registers_->v_[vx].peek() != registers_->v_[vy].peek()) { registers_->pc_.increment(2); }
 }
 
-/**
- * rmk Ambiguous https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#annn-set-index
- * @param addr
- */
 void Instructions::ld_Annn(address_t addr) {
   registers_->i_.poke(addr);
 }
@@ -123,6 +125,15 @@ void Instructions::ld_Annn(address_t addr) {
  */
 void Instructions::jp_Bnnn(address_t addr) {
   registers_->pc_.poke(addr + registers_->v_[0].peek());
+}
+
+/**
+ * rmk Ambiguous https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#bnnn-jump-with-offset
+ * @param vx
+ * @param addr
+ */
+void Instructions::jp_Bxnn(regnb_t vx, address_t addr) {
+  registers_->pc_.poke(addr + registers_->v_[vx].peek());
 }
 
 void Instructions::rnd_Cxkk(regnb_t vx, uint8_t byte) {
@@ -218,7 +229,10 @@ void Instructions::ld_Fx33(regnb_t vx) {
 void Instructions::ld_Fx55(regnb_t vx) {
   for (int i = 0; i <= vx; i++) {
     memory_->poke(registers_->v_[i].peek(), registers_->i_.peek() + i);
-    //    registers_->i_.increment();
+
+    if (configuration_->isCFx55Fx65IncrementsI()) {
+          registers_->i_.increment();
+    }
   }
 }
 
@@ -229,6 +243,9 @@ void Instructions::ld_Fx55(regnb_t vx) {
 void Instructions::ld_Fx65(regnb_t vx) {
   for (int i = 0; i <= vx; i++) {
     registers_->v_[i].poke(memory_->peek(registers_->i_.peek() + i));
-    //    registers_->i_.increment();
+
+    if (configuration_->isCFx55Fx65IncrementsI()) {
+      registers_->i_.increment();
+    }
   }
 }

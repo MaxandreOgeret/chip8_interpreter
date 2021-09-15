@@ -3,13 +3,13 @@
 
 #include "RomParser.h"
 
-RomParser::RomParser(std::string romPath, std::shared_ptr<mem::Memory> memory,
+RomParser::RomParser(std::shared_ptr<Configuration> configuration, std::shared_ptr<mem::Memory> memory,
                      std::shared_ptr<reg::RegisterManager> registerManager,
                      std::shared_ptr<Instructions> instructions)
-    : romPath_(romPath), memory_(memory), registers_(registerManager), instructions_(instructions) {
-  std::cout << "Loading ROM: " << romPath_ << "\n";
+    : configuration_(configuration), memory_(memory), registers_(registerManager), instructions_(instructions) {
+  std::cout << "Loading ROM: " << configuration_->getRomPath() << "\n";
 
-  source_ = std::ifstream(romPath_, std::ios_base::binary);
+  source_ = std::ifstream(configuration_->getRomPath(), std::ios_base::binary);
 
   if (!source_) { throw std::runtime_error("Unable to open rom."); }
 
@@ -110,7 +110,11 @@ void RomParser::decode() {
       instructions_->ld_Annn(get_from_opcode(opcode_, 0x0FFF));
       return;
     case 0xB:
-      instructions_->jp_Bnnn(get_from_opcode(opcode_, 0x0FFF));
+      if (configuration_->isCBnnnBecomesBxnn()) {
+        instructions_->jp_Bxnn(get_from_opcode(opcode_, 0x0F00), get_from_opcode(opcode_, 0x0FFF));
+      } else {
+        instructions_->jp_Bnnn(get_from_opcode(opcode_, 0x0FFF));
+      }
       return;
     case 0xC:
       instructions_->rnd_Cxkk(get_from_opcode(opcode_, 0x0F00), get_from_opcode(opcode_, 0x00FF));

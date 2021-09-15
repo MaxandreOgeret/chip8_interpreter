@@ -12,15 +12,15 @@ void inthand(int signum) {
   stop = 1;
 }
 
-Emulator::Emulator(std::string romPath, bool conf_1, bool conf_2, bool conf_3, bool conf_4) {
+Emulator::Emulator(std::shared_ptr<Configuration> configuration) {
   signal(SIGINT, inthand);
   signal(SIGTERM, inthand);
 
   memory_ = std::make_shared<mem::Memory>();
   registers_ = std::make_shared<reg::RegisterManager>(FREQ);
   interface_ = std::make_shared<Interface>(registers_);
-  instructions_ = std::make_shared<Instructions>(memory_, registers_, interface_);
-  romParser_ = std::make_shared<RomParser>(romPath, memory_, registers_, instructions_);
+  instructions_ = std::make_shared<Instructions>(configuration, memory_, registers_, interface_);
+  romParser_ = std::make_shared<RomParser>(configuration, memory_, registers_, instructions_);
 }
 
 void Emulator::loop() {
