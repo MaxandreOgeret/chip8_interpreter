@@ -1153,7 +1153,6 @@ TEST(instructions, Fx33) {
                       memory->peek(registers->i_.peek() + 1) * 10 +
                       memory->peek(registers->i_.peek() + 2),
               i * 5);
-    std::cout << (int) i * 5 << "\n";
   }
 }
 

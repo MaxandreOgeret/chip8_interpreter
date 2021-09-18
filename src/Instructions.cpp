@@ -60,25 +60,19 @@ void Instructions::ld_8xy0(regnb_t vx, regnb_t vy) {
 void Instructions::or_8xy1(regnb_t vx, regnb_t vy) {
   registers_->v_[vx].poke(registers_->v_[vx].peek() | registers_->v_[vy].peek());
 
-  if (configuration_->isC8Xy18Xy28Xy3ResetVf()) {
-    registers_->v_[0xf].poke(0x0);
-  }
+  if (configuration_->isC8Xy18Xy28Xy3ResetVf()) { registers_->v_[0xf].poke(0x0); }
 }
 
 void Instructions::and_8xy2(regnb_t vx, regnb_t vy) {
   registers_->v_[vx].poke(registers_->v_[vx].peek() & registers_->v_[vy].peek());
 
-  if (configuration_->isC8Xy18Xy28Xy3ResetVf()) {
-    registers_->v_[0xf].poke(0x0);
-  }
+  if (configuration_->isC8Xy18Xy28Xy3ResetVf()) { registers_->v_[0xf].poke(0x0); }
 }
 
 void Instructions::xor_8xy3(regnb_t vx, regnb_t vy) {
   registers_->v_[vx].poke(registers_->v_[vx].peek() ^ registers_->v_[vy].peek());
 
-  if (configuration_->isC8Xy18Xy28Xy3ResetVf()) {
-    registers_->v_[0xf].poke(0x0);
-  }
+  if (configuration_->isC8Xy18Xy28Xy3ResetVf()) { registers_->v_[0xf].poke(0x0); }
 }
 
 void Instructions::add_8xy4(regnb_t vx, regnb_t vy) {

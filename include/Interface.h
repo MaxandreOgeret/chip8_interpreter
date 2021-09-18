@@ -17,7 +17,7 @@
 #include "register/RegisterManager.h"
 
 const int AMPLITUDE = 500;
-const int SAMPLE_RATE = 44100;
+const int SAMPLE_RATE = 20000;
 
 class Interface {
 public:

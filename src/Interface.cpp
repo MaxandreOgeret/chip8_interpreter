@@ -14,7 +14,7 @@ Interface::Interface(const std::shared_ptr<reg::RegisterManager> & registers, bo
   want_.freq = SAMPLE_RATE;
   want_.format = AUDIO_S16SYS;
   want_.channels = 1;
-  want_.samples = 8192;
+  want_.samples = 100;
   want_.callback = Interface::forward_audio_callback;
   want_.userdata = &sound_userdata_;
 
