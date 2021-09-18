@@ -37,7 +37,7 @@ TEST(init, init_registers) {
 
 TEST(init, init_display) {
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
-  std::shared_ptr<Interface> display = std::make_shared<Interface>(registers);
+  std::shared_ptr<Interface> display = std::make_shared<Interface>(registers, true);
 
   for (int x = 0; x < display->SIZE_X_; x++) {
     for (int y = 0; y < display->SIZE_Y_; y++) { EXPECT_FALSE(display->is_pixel_on(x, y)); }
@@ -47,7 +47,7 @@ TEST(init, init_display) {
 
 TEST(init, init_parser) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./test/cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> display = std::make_shared<Interface>(registers, true);

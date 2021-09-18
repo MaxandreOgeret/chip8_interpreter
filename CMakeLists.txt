@@ -58,20 +58,26 @@ target_include_directories(CHIP8
         PRIVATE ${tclap_SOURCE_DIR}/include
         )
 
+# Building TESTS
 enable_testing()
 
-add_executable(init
+add_executable(TESTS
         test/init.cpp
         test/instructions.cpp
         src/Memory.cpp
         )
 
-target_link_libraries(init
+target_link_libraries(TESTS
         CHIP8_L
-        SDL2main
         gtest_main
+        SDL2
+        )
+
+configure_file(test/cls.ch8
+        ${PROJECT_BINARY_DIR}
+        COPYONLY
         )
 
 include(GoogleTest)
-gtest_discover_tests(init)
+gtest_discover_tests(TESTS)
 ##################################
