@@ -23,6 +23,7 @@ public:
   void loop();
 
 private:
+  std::shared_ptr<Configuration> configuration_;
   std::shared_ptr<mem::Memory> memory_;
   std::shared_ptr<reg::RegisterManager> registers_;
   std::shared_ptr<Instructions> instructions_;

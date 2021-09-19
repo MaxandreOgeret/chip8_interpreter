@@ -19,8 +19,8 @@ void Instructions::cls_00E0() {
 }
 
 void Instructions::ret_00EE() {
-  registers_->pc_.poke(registers_->stack_.pop_back());
-  registers_->sp_.decrement();
+  registers_->pc_.poke(registers_->stack_.top());
+  registers_->stack_.pop();
 }
 
 void Instructions::jp_1nnn(address_t addr) {
@@ -28,8 +28,7 @@ void Instructions::jp_1nnn(address_t addr) {
 }
 
 void Instructions::call_2nnn(address_t addr) {
-  registers_->sp_.increment();
-  registers_->stack_.push_back(registers_->pc_.peek());
+  registers_->stack_.push(registers_->pc_.peek());
   registers_->pc_.poke(addr);
 }
 

@@ -28,7 +28,7 @@ jobs:
 
     - name: Build
       # Build your program with the given configuration
-      run: cd ${{github.workspace}}/build && cmake --build . --target CHIP8 && cmake --build . --target TESTS
+      run: cd ${{github.workspace}}/build && cmake --build . --target CHIP8 TESTS
 
     - name: Test
       working-directory: ${{github.workspace}}/build

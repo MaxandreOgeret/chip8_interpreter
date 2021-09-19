@@ -24,13 +24,15 @@ int main(int argc, char ** argv) {
     TCLAP::SwitchArg conf_1_arg(
             "1", "1", "Shift instructions 8xy6 and 8xyE will also set xv to the value of xy.", cmd,
             false);
+    TCLAP::ValueArg<int> freq_arg("f", "Frequency", "CPU Frequency (Default: 500Hz)", false, 500, "value");
+    cmd.add(freq_arg);
     TCLAP::UnlabeledValueArg<std::string> rom_path_arg("rom_path", "Path to CHIP8 rom.", true, "",
                                                        "Path");
     cmd.add(rom_path_arg);
     cmd.parse(argc, argv);
 
     std::shared_ptr<Configuration> configuration = std::make_shared<Configuration>(
-            rom_path_arg.getValue(), conf_1_arg.getValue(), conf_2_arg.getValue(),
+            rom_path_arg.getValue(), freq_arg.getValue(), conf_1_arg.getValue(), conf_2_arg.getValue(),
             conf_3_arg.getValue(), conf_4_arg.getValue());
 
     std::unique_ptr<Interpreter> interpreter = std::make_unique<Interpreter>(configuration);

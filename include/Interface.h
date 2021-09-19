@@ -49,14 +49,13 @@ public:
   static void simulate_keypress(SDL_Keycode key);
 
 private:
+  const Uint8* key_state_;
   std::shared_ptr<reg::RegisterManager> registers_;
   SDL_Window * window = nullptr;
   SDL_Renderer * renderer = nullptr;
   int bpp_;
-  SDL_Color rgb_;
   SDL_Event events_;
   Uint8 * p_;
-  SDL_Keycode pressed_key_;
   SDL_AudioSpec want_, have_;
   int sound_userdata_ = 0;
   Sint16 * audio_buffer_ = nullptr;

@@ -4,15 +4,14 @@
 #ifndef CHIP8_REGISTERMANAGER_H
 #define CHIP8_REGISTERMANAGER_H
 
-#include <cassert>
 #include <cstddef>
 #include <cstdint>
 #include <iostream>
 #include <stdexcept>
 #include <vector>
+#include <stack>
 
 #include "register/Register.h"
-#include "register/Stack.h"
 
 namespace reg {
   using regnb_t = uint8_t;
@@ -40,7 +39,7 @@ namespace reg {
     Register<uint8_t> sp_;
 
     // 16x 16-bit stack
-    Stack<uint16_t> stack_ = Stack<uint16_t>(16);
+    std::stack<uint16_t> stack_;
 
     void trigger_timers();
 

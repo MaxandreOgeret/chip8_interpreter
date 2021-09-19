@@ -8,17 +8,18 @@
 
 class Configuration {
 public:
-  Configuration(const std::string & romPath, bool c8Xy68XyESetsVy, bool cBnnnBecomesBxnn,
-                bool cFx55Fx65IncrementsI, bool c8Xy18Xy28Xy3ResetVf);
-
+  Configuration(const std::string & romPath, int frequency, bool c8Xy68XyESetsVy,
+                bool cBnnnBecomesBxnn, bool cFx55Fx65IncrementsI, bool c8Xy18Xy28Xy3ResetVf);
   const std::string & getRomPath() const;
   bool isC8Xy68XyESetsVy() const;
   bool isCBnnnBecomesBxnn() const;
   bool isCFx55Fx65IncrementsI() const;
   bool isC8Xy18Xy28Xy3ResetVf() const;
+  int getFrequency() const;
 
 private:
   std::string rom_path_;
+  int frequency_;
   bool c_8xy6_8xyE_sets_vy_;      // arg 1
   bool c_Bnnn_becomes_Bxnn_;      // arg 2
   bool c_Fx55_Fx65_increments_i_; // arg 3

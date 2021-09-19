@@ -877,78 +877,6 @@ TEST(instructions, Dxyn) {
   }
 }
 
-TEST(instructions, Ex9E) {
-  std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
-  std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
-  std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
-  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions =
-          std::make_shared<Instructions>(configuration, memory, registers, interface);
-  std::shared_ptr<RomParser> romParser =
-          std::make_shared<RomParser>(configuration, memory, registers, instructions);
-
-  registers->v_[0].poke(0x0);
-  registers->v_[1].poke(0x1);
-
-  interface->simulate_keypress(SDLK_1);
-
-  for (int i = 0; i <= 100; i++) {
-    interface->poll_events();
-    interface->get_keys();
-    if (interface->is_pressed(0x1)) {
-      break;
-    } else if (i == 100) {
-      throw std::runtime_error("Unable to detect keypress after 100 tries.");
-    }
-  }
-  EXPECT_EQ(registers->pc_.peek(), 0x200);
-
-  romParser->set_opcode(0xE09E);
-  romParser->decode();
-  EXPECT_EQ(registers->pc_.peek(), 0x200);
-
-  romParser->set_opcode(0xE19E);
-  romParser->decode();
-  EXPECT_EQ(registers->pc_.peek(), 0x202);
-}
-
-TEST(instructions, ExA1) {
-  std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
-  std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
-  std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
-  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions =
-          std::make_shared<Instructions>(configuration, memory, registers, interface);
-  std::shared_ptr<RomParser> romParser =
-          std::make_shared<RomParser>(configuration, memory, registers, instructions);
-
-  registers->v_[0].poke(0x0);
-  registers->v_[1].poke(0x1);
-
-  interface->simulate_keypress(SDLK_1);
-
-  for (int i = 0; i <= 100; i++) {
-    interface->poll_events();
-    interface->get_keys();
-    if (interface->is_pressed(0x1)) {
-      break;
-    } else if (i == 100) {
-      throw std::runtime_error("Unable to detect keypress after 100 tries.");
-    }
-  }
-  EXPECT_EQ(registers->pc_.peek(), 0x200);
-
-  romParser->set_opcode(0xE0A1);
-  romParser->decode();
-  EXPECT_EQ(registers->pc_.peek(), 0x202);
-
-  romParser->set_opcode(0xE1A1);
-  romParser->decode();
-  EXPECT_EQ(registers->pc_.peek(), 0x202);
-}
-
 TEST(instructions, Fx07) {
   std::shared_ptr<Configuration> configuration =
           std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
@@ -1050,44 +978,6 @@ TEST(instructions, Fx1E) {
   romParser->decode();
   EXPECT_EQ(registers->i_.peek(), 0x1000);
   EXPECT_EQ(registers->v_[0xf].peek(), 0x1);
-}
-
-TEST(instructions, Fx0A) {
-  std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
-  std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
-  std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
-  std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
-  std::shared_ptr<Instructions> instructions =
-          std::make_shared<Instructions>(configuration, memory, registers, interface);
-  std::shared_ptr<RomParser> romParser =
-          std::make_shared<RomParser>(configuration, memory, registers, instructions);
-
-  EXPECT_EQ(registers->pc_.peek(), 0x200);
-  registers->v_[0xD].poke(0xa);
-  romParser->set_opcode(0xFD0A);
-  romParser->decode();
-  EXPECT_EQ(registers->pc_.peek(), 0x1fe);
-  EXPECT_EQ(registers->v_[0xD].peek(), 0xa);
-
-
-  interface->simulate_keypress(SDLK_1);
-
-  for (int i = 0; i <= 100; i++) {
-    interface->poll_events();
-    interface->get_keys();
-    if (interface->is_pressed(0x1)) {
-      break;
-    } else if (i == 100) {
-      throw std::runtime_error("Unable to detect keypress after 100 tries.");
-    }
-  }
-
-  registers->v_[0xD].poke(0xa);
-  romParser->set_opcode(0xFD0A);
-  romParser->decode();
-  EXPECT_EQ(registers->pc_.peek(), 0x1fe);
-  EXPECT_EQ(registers->v_[0xD].peek(), 0x1);
 }
 
 TEST(instructions, Fx29) {

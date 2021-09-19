@@ -84,91 +84,66 @@ bool Interface::is_pixel_on(int x, int y) {
 }
 
 void Interface::get_keys() {
-  if (events_.type == SDL_KEYDOWN && !events_.key.repeat) {
-    pressed_key_ = events_.key.keysym.sym;
-  } else {
-    pressed_key_ = 0;
-  }
+  key_state_ = SDL_GetKeyboardState(NULL);
 }
 
 bool Interface::is_pressed(uint8_t key) const {
-  if (events_.key.repeat) { return false; }
-
   switch (key) {
     case 0x1:
-      return pressed_key_ == SDLK_1;
+      return key_state_[SDL_SCANCODE_1];
     case 0x2:
-      return pressed_key_ == SDLK_2;
+      return key_state_[SDL_SCANCODE_2];
     case 0x3:
-      return pressed_key_ == SDLK_3;
+      return key_state_[SDL_SCANCODE_3];
     case 0xc:
-      return pressed_key_ == SDLK_4;
+      return key_state_[SDL_SCANCODE_4];
     case 0x4:
-      return pressed_key_ == SDLK_q;
+      return key_state_[SDL_SCANCODE_Q];
     case 0x5:
-      return pressed_key_ == SDLK_w;
+      return key_state_[SDL_SCANCODE_W];
     case 0x6:
-      return pressed_key_ == SDLK_e;
+      return key_state_[SDL_SCANCODE_E];
     case 0xd:
-      return pressed_key_ == SDLK_r;
+      return key_state_[SDL_SCANCODE_R];
     case 0x7:
-      return pressed_key_ == SDLK_a;
+      return key_state_[SDL_SCANCODE_A];
     case 0x8:
-      return pressed_key_ == SDLK_s;
+      return key_state_[SDL_SCANCODE_S];
     case 0x9:
-      return pressed_key_ == SDLK_d;
+      return key_state_[SDL_SCANCODE_D];
     case 0xe:
-      return pressed_key_ == SDLK_f;
+      return key_state_[SDL_SCANCODE_F];
     case 0xa:
-      return pressed_key_ == SDLK_z;
+      return key_state_[SDL_SCANCODE_Z];
     case 0x0:
-      return pressed_key_ == SDLK_x;
+      return key_state_[SDL_SCANCODE_X];
     case 0xb:
-      return pressed_key_ == SDLK_c;
+      return key_state_[SDL_SCANCODE_C];
     case 0xf:
-      return pressed_key_ == SDLK_v;
+      return key_state_[SDL_SCANCODE_V];
     default:
       return false;
   }
 }
 
 uint8_t Interface::get_any_pressed() const {
-
-  if (pressed_key_ == SDLK_1) {
-    return 0x1;
-  } else if (pressed_key_ == SDLK_2) {
-    return 0x2;
-  } else if (pressed_key_ == SDLK_3) {
-    return 0x3;
-  } else if (pressed_key_ == SDLK_4) {
-    return 0xC;
-  } else if (pressed_key_ == SDLK_q) {
-    return 0x4;
-  } else if (pressed_key_ == SDLK_w) {
-    return 0x5;
-  } else if (pressed_key_ == SDLK_e) {
-    return 0x6;
-  } else if (pressed_key_ == SDLK_r) {
-    return 0xD;
-  } else if (pressed_key_ == SDLK_a) {
-    return 0x7;
-  } else if (pressed_key_ == SDLK_s) {
-    return 0x8;
-  } else if (pressed_key_ == SDLK_d) {
-    return 0x9;
-  } else if (pressed_key_ == SDLK_f) {
-    return 0xE;
-  } else if (pressed_key_ == SDLK_z) {
-    return 0xA;
-  } else if (pressed_key_ == SDLK_x) {
-    return 0x0;
-  } else if (pressed_key_ == SDLK_c) {
-    return 0xB;
-  } else if (pressed_key_ == SDLK_v) {
-    return 0xF;
-  } else {
-    return 0x10;
-  }
+  if (key_state_[SDL_SCANCODE_1]) { return 0x1; }
+  if (key_state_[SDL_SCANCODE_2]) { return 0x2; }
+  if (key_state_[SDL_SCANCODE_3]) { return 0x3; }
+  if (key_state_[SDL_SCANCODE_4]) { return 0xc; }
+  if (key_state_[SDL_SCANCODE_Q]) { return 0x4; }
+  if (key_state_[SDL_SCANCODE_W]) { return 0x5; }
+  if (key_state_[SDL_SCANCODE_E]) { return 0x6; }
+  if (key_state_[SDL_SCANCODE_R]) { return 0xd; }
+  if (key_state_[SDL_SCANCODE_A]) { return 0x7; }
+  if (key_state_[SDL_SCANCODE_S]) { return 0x8; }
+  if (key_state_[SDL_SCANCODE_D]) { return 0x9; }
+  if (key_state_[SDL_SCANCODE_F]) { return 0xe; }
+  if (key_state_[SDL_SCANCODE_Z]) { return 0xa; }
+  if (key_state_[SDL_SCANCODE_X]) { return 0x0; }
+  if (key_state_[SDL_SCANCODE_C]) { return 0xb; }
+  if (key_state_[SDL_SCANCODE_V]) { return 0xf; }
+  return 0x10;
 }
 
 unsigned short int Interface::normalize_x(unsigned short int x) const {
@@ -201,11 +176,4 @@ void Interface::toogle_buzzer() {
   } else {
     SDL_PauseAudio(1);
   }
-}
-
-void Interface::simulate_keypress(SDL_Keycode key) {
-  SDL_Event sdlevent = {};
-  sdlevent.type = SDL_KEYDOWN;
-  sdlevent.key.keysym.sym = key;
-  SDL_PushEvent(&sdlevent);
 }
