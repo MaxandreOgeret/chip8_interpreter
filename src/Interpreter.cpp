@@ -12,8 +12,8 @@ void inthand(int signum) {
   stop = 1;
 }
 
-Interpreter::Interpreter(std::shared_ptr<Configuration> configuration) :
-      configuration_(configuration) {
+Interpreter::Interpreter(std::shared_ptr<Configuration> configuration)
+    : configuration_(configuration) {
   signal(SIGINT, inthand);
   signal(SIGTERM, inthand);
 
@@ -26,7 +26,8 @@ Interpreter::Interpreter(std::shared_ptr<Configuration> configuration) :
 
 void Interpreter::loop() {
 
-  const milliseconds intervalPeriodMillis{static_cast<int>((1. / configuration_->getFrequency()) * 1000)};
+  const milliseconds intervalPeriodMillis{
+          static_cast<int>((1. / configuration_->getFrequency()) * 1000)};
 
   //Initialize the chrono timepoint & duration objects we'll be //using over & over inside our sleep loop
   system_clock::time_point currentStartTime{system_clock::now()};

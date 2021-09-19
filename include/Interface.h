@@ -49,7 +49,7 @@ public:
   static void simulate_keypress(SDL_Keycode key);
 
 private:
-  const Uint8* key_state_;
+  const Uint8 * key_state_;
   std::shared_ptr<reg::RegisterManager> registers_;
   SDL_Window * window = nullptr;
   SDL_Renderer * renderer = nullptr;
