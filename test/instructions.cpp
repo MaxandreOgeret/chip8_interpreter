@@ -14,7 +14,7 @@ const unsigned short int FREQ = 500;
 
 TEST(instructions, get_from_opcode) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> display = std::make_shared<Interface>(registers, true);
@@ -56,7 +56,7 @@ TEST(instructions, get_from_opcode) {
 
 TEST(instructions, 00E0) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -83,7 +83,7 @@ TEST(instructions, 00E0) {
 
 TEST(instructions, 00EE) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -96,7 +96,7 @@ TEST(instructions, 00EE) {
   EXPECT_EQ(registers->sp_.peek(), 0);
   EXPECT_EQ(registers->pc_.peek(), 0x200);
 
-  registers->stack_.push_back(0x0FFF);
+  registers->stack_.push(0x0FFF);
   registers->sp_.increment(1);
 
   EXPECT_EQ(registers->stack_.size(), 1);
@@ -112,7 +112,7 @@ TEST(instructions, 00EE) {
 
 TEST(instructions, 1nnn) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -131,7 +131,7 @@ TEST(instructions, 1nnn) {
 
 TEST(instructions, 2nnn) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -149,14 +149,14 @@ TEST(instructions, 2nnn) {
 
   EXPECT_EQ(registers->sp_.peek(), 1);
   EXPECT_EQ(registers->stack_.size(), 1);
-  EXPECT_EQ(registers->stack_.back(), 0x200);
+  EXPECT_EQ(registers->stack_.top(), 0x200);
   EXPECT_EQ(registers->pc_.peek(), 0xDEF);
 }
 
 
 TEST(instructions, 3xkk) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -188,7 +188,7 @@ TEST(instructions, 3xkk) {
 
 TEST(instructions, 4xkk) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -220,7 +220,7 @@ TEST(instructions, 4xkk) {
 
 TEST(instructions, 5xy0) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -264,7 +264,7 @@ TEST(instructions, 5xy0) {
 
 TEST(instructions, 6xkk) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -289,7 +289,7 @@ TEST(instructions, 6xkk) {
 
 TEST(instructions, 7xkk) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -316,7 +316,7 @@ TEST(instructions, 7xkk) {
 
 TEST(instructions, 8xy0) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -348,7 +348,7 @@ TEST(instructions, 8xy0) {
 
 TEST(instructions, 8xy1) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -381,7 +381,7 @@ TEST(instructions, 8xy1) {
 
 TEST(instructions, 8xy2) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -414,7 +414,7 @@ TEST(instructions, 8xy2) {
 
 TEST(instructions, 8xy3) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -447,7 +447,7 @@ TEST(instructions, 8xy3) {
 
 TEST(instructions, 8xy4) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -517,7 +517,7 @@ TEST(instructions, 8xy4) {
 
 TEST(instructions, 8xy5) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -551,7 +551,7 @@ TEST(instructions, 8xy5) {
 
 TEST(instructions, 8xy6) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -583,7 +583,7 @@ TEST(instructions, 8xy6) {
 
 TEST(instructions, 8xy6_set_vy) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", true, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, true, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -615,7 +615,7 @@ TEST(instructions, 8xy6_set_vy) {
 
 TEST(instructions, 8xy7) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -649,7 +649,7 @@ TEST(instructions, 8xy7) {
 
 TEST(instructions, 8xye) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", true, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, true, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -681,7 +681,7 @@ TEST(instructions, 8xye) {
 
 TEST(instructions, 9xy0) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -713,7 +713,7 @@ TEST(instructions, 9xy0) {
 
 TEST(instructions, Annn) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -730,7 +730,7 @@ TEST(instructions, Annn) {
 
 TEST(instructions, Bnnn) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -749,7 +749,7 @@ TEST(instructions, Bnnn) {
 
 TEST(instructions, Bxnn) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, true, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, true, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -776,7 +776,7 @@ TEST(instructions, Bxnn) {
  */
 TEST(instructions, Cxkk) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -793,7 +793,7 @@ TEST(instructions, Cxkk) {
 
 TEST(instructions, Dxyn) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -879,7 +879,7 @@ TEST(instructions, Dxyn) {
 
 TEST(instructions, Fx07) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -901,7 +901,7 @@ TEST(instructions, Fx07) {
 
 TEST(instructions, Fx15) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -923,7 +923,7 @@ TEST(instructions, Fx15) {
 
 TEST(instructions, Fx18) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -945,7 +945,7 @@ TEST(instructions, Fx18) {
 
 TEST(instructions, Fx1E) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -982,7 +982,7 @@ TEST(instructions, Fx1E) {
 
 TEST(instructions, Fx29) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -1010,7 +1010,7 @@ TEST(instructions, Fx29) {
 
 TEST(instructions, Fx33) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -1048,7 +1048,7 @@ TEST(instructions, Fx33) {
 
 TEST(instructions, Fx55) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -1071,7 +1071,7 @@ TEST(instructions, Fx55) {
 
 TEST(instructions, Fx55_increments_i) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, true, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, true, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -1095,7 +1095,7 @@ TEST(instructions, Fx55_increments_i) {
 
 TEST(instructions, Fx65) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -1114,7 +1114,7 @@ TEST(instructions, Fx65) {
 
 TEST(instructions, Fx65_increments_i) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, true, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, true, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -1136,7 +1136,7 @@ TEST(instructions, Fx65_increments_i) {
 
 TEST(instructions, 00EA) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
@@ -1151,7 +1151,7 @@ TEST(instructions, 00EA) {
 
 TEST(instructions, 02D8) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("./cls.ch8", false, false, false, false);
+          std::make_shared<Configuration>("./cls.ch8", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> interface = std::make_shared<Interface>(registers, true);
