@@ -38,3 +38,23 @@ Where:
    <Path>
      (required)  Path to CHIP8 rom.
 ```
+
+### How to build
+
+- Clone repo and navigate to the cloned directory.
+- Create `build` directory and navigate to it.  
+  ```
+  mkdir build && cd build
+  ```
+- Build project.  
+  ```
+  cmake .. -DCMAKE_BUILD_TYPE=Release
+  ```
+- Compile
+  ```
+  cmake --build . --target CHIP8 
+  ```
+- Running tests
+  ```
+  cmake --build . --target TESTS 
+  ```
