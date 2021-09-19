@@ -62,7 +62,7 @@ TEST(init, init_parser) {
 
 TEST(init, init_parser_fail) {
   std::shared_ptr<Configuration> configuration =
-          std::make_shared<Configuration>("", 500,false, false, false, false);
+          std::make_shared<Configuration>("", 500, false, false, false, false);
   std::shared_ptr<mem::Memory> memory = std::make_shared<mem::Memory>();
   std::shared_ptr<reg::RegisterManager> registers = std::make_shared<reg::RegisterManager>(FREQ);
   std::shared_ptr<Interface> display = std::make_shared<Interface>(registers, true);

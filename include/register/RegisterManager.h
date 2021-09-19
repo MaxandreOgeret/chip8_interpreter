@@ -41,6 +41,9 @@ namespace reg {
     // 16x 16-bit stack
     std::stack<uint16_t> stack_;
 
+    /**
+     * Decrements the timers at a fixed 60Hz frequency.
+     */
     void trigger_timers();
 
   private:

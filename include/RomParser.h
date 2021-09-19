@@ -27,9 +27,26 @@ public:
   std::shared_ptr<reg::RegisterManager> registers_;
   std::shared_ptr<Instructions> instructions_;
 
+  /**
+   * Goes one step forward in the program execution.
+   * Loads OPCODE and increments PC.
+   */
   void step();
+
+  /**
+   * Decodes the OPCODE and calls the corresponding instruction.
+   * @throws std::runtime_error if OPCODE is unknown
+   */
   void decode();
+
+  /**
+   * Extracts the values from the OPCODE.
+   * @param opcode
+   * @param mask
+   * @return
+   */
   uint16_t get_from_opcode(const uint16_t & opcode, const uint16_t mask);
+
   /**
    * For testing/debugging
    * @param opcode

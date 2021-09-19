@@ -10,11 +10,36 @@ class Configuration {
 public:
   Configuration(const std::string & romPath, int frequency, bool c8Xy68XyESetsVy,
                 bool cBnnnBecomesBxnn, bool cFx55Fx65IncrementsI, bool c8Xy18Xy28Xy3ResetVf);
+
+
+  /**
+   * @returns rom path.
+   */
   const std::string & getRomPath() const;
+
+  /**
+   * @returns state of config
+   */
   bool isC8Xy68XyESetsVy() const;
+
+  /**
+   * @returns state of config
+   */
   bool isCBnnnBecomesBxnn() const;
+
+  /**
+   * @returns state of config
+   */
   bool isCFx55Fx65IncrementsI() const;
+
+  /**
+   * @returns state of config
+   */
   bool isC8Xy18Xy28Xy3ResetVf() const;
+
+  /**
+   * @returns state of config
+   */
   int getFrequency() const;
 
 private:
