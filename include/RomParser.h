@@ -18,11 +18,10 @@
 
 class RomParser {
 public:
-  explicit RomParser(const std::shared_ptr<Configuration> configuration,
-                     const std::shared_ptr<mem::Memory> memory,
+  explicit RomParser(Configuration & configuration, const std::shared_ptr<mem::Memory> memory,
                      const std::shared_ptr<reg::RegisterManager> registerManager,
                      const std::shared_ptr<Instructions> instructions);
-  std::shared_ptr<Configuration> configuration_;
+  Configuration & configuration_;
   std::shared_ptr<mem::Memory> memory_;
   std::shared_ptr<reg::RegisterManager> registers_;
   std::shared_ptr<Instructions> instructions_;

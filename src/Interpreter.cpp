@@ -2,6 +2,7 @@
 // Licensed under MIT License
 
 #include "Interpreter.h"
+#include <memory>
 
 volatile static sig_atomic_t stop = 0;
 const unsigned short int FREQ = 500;
@@ -12,13 +13,13 @@ void inthand(int signum) {
   stop = 1;
 }
 
-Interpreter::Interpreter(std::shared_ptr<Configuration> configuration)
-    : configuration_(configuration) {
+Interpreter::Interpreter(Configuration & configuration) : configuration_(configuration) {
   signal(SIGINT, inthand);
   signal(SIGTERM, inthand);
 
+
   memory_ = std::make_shared<mem::Memory>();
-  registers_ = std::make_shared<reg::RegisterManager>(configuration->getFrequency());
+  registers_ = std::make_shared<reg::RegisterManager>(configuration_.getFrequency());
   interface_ = std::make_shared<Interface>(registers_);
   instructions_ = std::make_shared<Instructions>(configuration, memory_, registers_, interface_);
   romParser_ = std::make_shared<RomParser>(configuration, memory_, registers_, instructions_);
@@ -27,7 +28,7 @@ Interpreter::Interpreter(std::shared_ptr<Configuration> configuration)
 void Interpreter::loop() {
 
   const milliseconds intervalPeriodMillis{
-          static_cast<int>((1. / configuration_->getFrequency()) * 1000)};
+          static_cast<int>((1. / configuration_.getFrequency()) * 1000)};
 
   //Initialize the chrono timepoint & duration objects we'll be //using over & over inside our sleep loop
   system_clock::time_point currentStartTime{system_clock::now()};

@@ -32,11 +32,11 @@ int main(int argc, char ** argv) {
     cmd.add(rom_path_arg);
     cmd.parse(argc, argv);
 
-    std::shared_ptr<Configuration> configuration = std::make_shared<Configuration>(
+    std::unique_ptr<Configuration> configuration = std::make_unique<Configuration>(
             rom_path_arg.getValue(), freq_arg.getValue(), conf_1_arg.getValue(),
             conf_2_arg.getValue(), conf_3_arg.getValue(), conf_4_arg.getValue());
 
-    std::unique_ptr<Interpreter> interpreter = std::make_unique<Interpreter>(configuration);
+    std::unique_ptr<Interpreter> interpreter = std::make_unique<Interpreter>(*configuration);
     interpreter->loop();
   } catch (TCLAP::ArgException & e) {
     std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl;

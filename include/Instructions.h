@@ -18,13 +18,12 @@ using namespace reg;
 
 class Instructions {
 public:
-  Instructions(const std::shared_ptr<Configuration> & configuration,
-               const std::shared_ptr<mem::Memory> & memory,
+  Instructions(Configuration & configuration, const std::shared_ptr<mem::Memory> & memory,
                const std::shared_ptr<reg::RegisterManager> & registers,
                const std::shared_ptr<Interface> & interface);
 
 private:
-  std::shared_ptr<Configuration> configuration_;
+  Configuration & configuration_;
   std::shared_ptr<mem::Memory> memory_;
   std::shared_ptr<reg::RegisterManager> registers_;
   std::shared_ptr<Interface> interface_;
