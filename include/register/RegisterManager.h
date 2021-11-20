@@ -21,7 +21,7 @@ namespace reg {
     RegisterManager(unsigned short int frequency);
 
     // 16x 8-bit general purpose registers
-    std::vector<Register<uint8_t>> v_;
+    std::array<Register<uint8_t>, 0x10> v_;
 
     // 16-bit general purpose register
     Register<uint16_t> i_;
@@ -34,9 +34,6 @@ namespace reg {
 
     // 16-bit program counter
     Register<uint16_t> pc_;
-
-    // 8-bit program counter
-    Register<uint8_t> sp_;
 
     // 16x 16-bit stack
     std::stack<uint16_t> stack_;

@@ -93,21 +93,17 @@ TEST(instructions, 00EE) {
           std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->stack_.size(), 0);
-  EXPECT_EQ(registers->sp_.peek(), 0);
   EXPECT_EQ(registers->pc_.peek(), 0x200);
 
   registers->stack_.push(0x0FFF);
-  registers->sp_.increment(1);
 
   EXPECT_EQ(registers->stack_.size(), 1);
-  EXPECT_EQ(registers->sp_.peek(), 1);
 
   romParser->set_opcode(0x00EE);
   romParser->decode();
 
   EXPECT_EQ(registers->pc_.peek(), 0x0FFF);
   EXPECT_EQ(registers->stack_.size(), 0);
-  EXPECT_EQ(registers->sp_.peek(), 0);
 }
 
 TEST(instructions, 1nnn) {
@@ -141,13 +137,13 @@ TEST(instructions, 2nnn) {
           std::make_shared<RomParser>(configuration, memory, registers, instructions);
 
   EXPECT_EQ(registers->stack_.size(), 0);
-  EXPECT_EQ(registers->sp_.peek(), 0);
+  //  EXPECT_EQ(registers->sp_.peek(), 0);
   EXPECT_EQ(registers->pc_.peek(), 0x200);
 
   romParser->set_opcode(0x2DEF);
   romParser->decode();
 
-  EXPECT_EQ(registers->sp_.peek(), 1);
+  //  EXPECT_EQ(registers->sp_.peek(), 1);
   EXPECT_EQ(registers->stack_.size(), 1);
   EXPECT_EQ(registers->stack_.top(), 0x200);
   EXPECT_EQ(registers->pc_.peek(), 0xDEF);

@@ -6,7 +6,6 @@
 using namespace reg;
 
 RegisterManager::RegisterManager(const unsigned short int frequency) {
-  v_ = std::vector<Register<uint8_t>>(0x10);
   pc_.poke(0x200);
   decrement_interval_ = frequency / 60;
 }
