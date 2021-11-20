@@ -29,7 +29,7 @@ void Interpreter::loop() {
   const milliseconds intervalPeriodMillis{
           static_cast<int>((1. / configuration_->getFrequency()) * 1000)};
 
-  //Initialize the chrono timepoint & duration objects we'll be //using over & over inside our sleep loop
+  //Initialize the chrono timepoint & duration objects we'll be using over & over inside our sleep loop
   system_clock::time_point currentStartTime{system_clock::now()};
   system_clock::time_point nextStartTime{currentStartTime};
 
