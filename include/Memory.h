@@ -4,6 +4,7 @@
 #ifndef CHIP8_MEMORY_H
 #define CHIP8_MEMORY_H
 
+#include <array>
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
@@ -53,7 +54,8 @@ namespace mem {
     void init();
 
   private:
-    std::vector<uint8_t> memory;
+    // The Chip-8 language is capable of accessing up to 4,096 bytes (0x1000) of RAM
+    std::array<uint8_t, 0x1000> memory_;
 
     static inline void validate_address(address_t address) {
       if (address < 0x000) { throw std::runtime_error("Memory address < 0x000 (0)"); }

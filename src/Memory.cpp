@@ -8,15 +8,14 @@
 using namespace mem;
 
 Memory::Memory() {
-  // The Chip-8 language is capable of accessing up to 4,096 bytes (0x1000) of RAM
-  memory = std::vector<uint8_t>(0x1000, 0);
+  memory_.fill(0x0);
   init();
 }
 
 void Memory::poke(uint8_t value, address_t address) {
   validate_address(address);
   validate_value(value);
-  memory[address] = value;
+  memory_[address] = value;
 }
 
 void Memory::poke(std::vector<uint8_t> values, address_t address) {
@@ -25,7 +24,7 @@ void Memory::poke(std::vector<uint8_t> values, address_t address) {
 
 uint8_t Memory::peek(address_t address) {
   validate_address(address);
-  return memory[address];
+  return memory_[address];
 }
 
 void Memory::init() {
